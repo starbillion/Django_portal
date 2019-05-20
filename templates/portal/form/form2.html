@@ -1,0 +1,168 @@
+{% extends 'layout/template.html' %}
+{% load static %}
+
+{% block content %}
+    <center>
+        <div class="container align-center">
+            <div class="row justify-content-md-center">
+                <div class="mbr-white col-md-10" style="margin-top: 150px">
+                    <h2 class="mbr-section-title mbr-bold pb-3 mbr-fonts-style display-1" style="font-size: 2.25rem;">
+                        Farm
+                    </h2>
+                    <form style="" action="{% url 'start_form2' %}" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label for="form1_fb_id">FB ID Acount select <font
+                                                    color="red">*</font></label>
+
+                                        </div>
+                                        <div class="col-sm-8">
+                                            {% if script %}
+                                                {{ fb_id }}
+                                            {% else %}
+                                                <select class="form-control" id="form1_fb_id" name="form1_fb_id"
+                                                        required>
+                                                    <option value=""></option>
+                                                    {% for f in fb_list %}
+                                                        <option value="{{ f.id }}"
+                                                                onblur="changeFbID({{ f.id }})">{{ f.fb_id }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            {% endif %}
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label for="exampleFormControlSelect2">FB KEY Account <font
+                                                    color="red">*</font></label>
+
+                                        </div>
+                                        <div class="col-sm-8">
+                                            {% if script %}
+                                                {{ fb_key }}
+                                            {% else %}
+                                                <input class="form-control" id="form1_fb_key" name="form1_fb_key"
+                                                       readonly
+                                                       required>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            {% if script %}
+                                {% if script.option == "1" %}
+                                    <div class="col-sm-4">
+                                        <div class="radio">
+                                            <label><input type="radio" name="opt" value="1"
+                                                          checked> NRG Free Unit Exp (o)</label>
+                                        </div>
+                                    </div>
+                                {% endif %}
+
+                                {% if script.option == "2" %}
+                                    <div class="col-sm-4">
+                                        <div class="radio">
+                                            <label><input type="radio" name="opt" value="2"
+                                                          checked> NRG Free Rank Exp (o)</label>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if script.option == "3" %}
+                                    <div class="col-sm-4">
+                                        <div class="radio disabled">
+                                            <label><input type="radio" name="opt" value="3"
+                                                          checked> Both Unit & Rank Exp (o)</label>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                <div class="col-sm-4">
+                                    <div class="radio">
+                                        <label><input type="radio" name="opt" value="1"> NRG Free Unit Exp (o)</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="radio">
+                                        <label><input type="radio" name="opt" value="2"> NRG Free Rank Exp (o)</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="radio disabled">
+                                        <label><input type="radio" name="opt" value="3"> Both Unit & Rank Exp (o)</label>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label for="form1_fb_id">Farm with NRG[x] <font color="red">*</font></label>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            {% if script %}
+                                                {{ comment }}
+                                            {% else %}
+                                                <select class="form-control" id="form1_level" name="form1_level"
+                                                        required>
+                                                    <option value=""></option>
+                                                    {% for l in levels %}
+                                                        <option value="{{ l.id }}">{{ l.comment }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    {% if script %}
+                                        <span></span>
+                                    {% else %}
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                            </div>
+                                            <div class="col-sm-3">
+                                                {#                                            <input type="checkbox" class="form-check-input" id="checking" name="checking">( Check or#}
+                                                {#                                            Uncheck )#}
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <button type="submit"
+                                                        class="btn btn-lg btn-primary btn-block btn-signin">
+                                                    Start
+                                                </button>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </center>
+
+{% endblock %}

@@ -1,0 +1,3 @@
+Server IP:  18.236.185.93
+SSH Port: 22
+Login: ubuntu

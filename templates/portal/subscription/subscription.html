@@ -1,0 +1,95 @@
+{% extends 'layout/template.html' %}
+{% load static %}
+
+{% block content %}
+    <center>
+        <div class="container align-center">
+            <div class="row justify-content-md-center">
+                <div class="mbr-white col-md-10" style="margin-top: 100px">
+                    <h2 class="mbr-section-title mbr-bold pb-3 mbr-fonts-style display-1" style="font-size: 2.25rem;">
+                        Portal Subscription</h2>
+                    <div class="row" style="background-color: white; color: black;border-radius: 5px;">
+                        <div class="col-sm-4">
+                            <span style="font-size: 25px;">
+                                Basic
+                            </span>
+
+                            <span style="font-weight: bold; font-size:50px;">
+                                    <p>$10</p>
+                            </span>
+                            <span style="font-size:20px;">
+                                    <p>Month</p>
+                            </span>
+                            {#                            <input type="button" class="btn btn-lg btn-primary" style="padding-top: 0px;background-image: url('{% static 'assets/images/PayPal.svg.png' %}')" value=""/>#}
+                            {#                            <img src="{% static 'assets/images/PayPal.svg.png' %}" width="50%" height="10%"#}
+                            {#                                 style="cursor: pointer;border:1px solid black; border-radius: 5px;" id="pay_basic">#}
+                            {{ form1.render }}
+                            <div>
+                                </br>
+                                Farm TMR</br>
+                                1 FB ID & KEY</br>
+                                </br>
+                            </div>
+                            <p></p>
+
+                        </div>
+                        <div class="col-sm-4">
+                            <span style="font-size: 25px;">
+                                Professional
+                            </span>
+                            <span style="font-weight: bold; font-size:50px;">
+                                    <p>$15</p>
+                                </span>
+                            <span style="font-size:20px;">
+                                    <p>Month</p>
+                            </span>
+                            {#                            <img src="{% static 'assets/images/PayPal.svg.png' %}" width="50%" height="10%"#}
+                            {#                                 style="cursor: pointer;border:1px solid black; border-radius: 5px;" id="pay_pro">#}
+                            {{ form2.render }}
+
+                            <div>
+                                </br>
+                                Farm TMR</br>
+                                Farm </br>
+                                1 FB ID & KEY</br>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-4">
+                            <span style="font-size: 25px;">
+                                Premier
+                            </span>
+                            <span style="font-weight: bold; font-size:50px;">
+                                    <p>$20</p>
+                                </span>
+                            <span style="font-size:20px;">
+                                    <p>Month</p>
+                            </span>
+                            {#                            <img src="{% static 'assets/images/PayPal.svg.png' %}" width="50%" height="10%"#}
+                            {#                                 style="cursor: pointer;border:1px solid black; border-radius: 5px;" id="pay_premier">#}
+                            {{ form3.render }}
+
+                            <div>
+                                </br>
+                                Farm TMR</br>
+                                Farm </br>
+                                Farm Mission for Items</br>
+                                Farm Raid Missions </br>
+                                1 FB ID & KEY</br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </center>
+{% endblock %}
+
+{% block custom_js %}
+    {% if payment_status is not None %}
+        <script>
+            $("#payment_status_modal").modal('show');
+        </script>
+
+    {% endif %}
+{% endblock %}

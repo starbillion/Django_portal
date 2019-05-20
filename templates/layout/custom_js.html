@@ -1,0 +1,350 @@
+<script>
+
+    function update_fb(id) {
+        $.ajax({
+            url: '/profile/update_fb/',
+            data: {
+                'id': id,
+                'fb_key': $('#fb_key' + id).val(),
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.is_updated) {
+                    $('#success_modal').modal('show');
+                }
+            }
+        });
+    }
+    $(document).ready(function () {
+
+        $("#form1_fb_id").change(function () {
+            $.ajax({
+                url: '/profile/get_fb_key/',
+                data: {
+                    'id': this.value,
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.is_taken) {
+                        $('#form1_fb_key').val(data.fb_key);
+                    }
+                }
+            });
+        });
+        // loading datatable if the visitor has already logged in
+        {% if request.session.logged_in %}
+            $('#example').DataTable({
+                "ajax": {
+                    "url": "/profile/fblist",
+                    "data": {
+                        "user_id": {{ request.session.user_id}}
+                    },
+                    "dataSrc": function (json) {
+
+                        return json;
+                    },
+                    "datatype": "json"
+                },
+                "columns": [
+                    {
+                        "data": "fb_id",
+
+                    },
+                    {
+                        "data": "fb_key",
+                        "render": function (data, type, row) {
+                            return '<input id="fb_key' + row.id + '" type="text" value="' + row.fb_key + '" style="width: 100%;"/>'
+                        }
+                    },
+                    {
+                        "data": "id",
+                        "render": function (data, type, row) {
+                            return '<input class="btn btn-lg btn-primary btn-block btn-signin" id="fb_id' + row.id + '" type="button" value="Save" style="width: 80%;" onclick="update_fb(' + row.id + ')"/>'
+                        }
+                    },
+                ],
+                "bLengthChange": false,
+                "bPaginate": false,
+                "autoWidth": true
+//            responsive: {
+//                details: {
+//                    display: $.fn.dataTable.Responsive.display.childRowImmediate,
+//                    type: ''
+//                }
+//            }
+            });
+
+
+            // if hitting add new FB ID & KEY account button on Profile page
+            $('#add_fb').click(function () {
+                $("#add_fb_modal").modal('show');
+                $('#warn_fb_id').remove();
+                $('#fb_id').val('');
+                $('#fb_key').val('');
+                $('.text-danger').remove();
+            })
+            // check if fb_id already exists in db
+            $('#fb_id').on('change', function () {
+                $('#warn_fb_id').remove();
+                $.ajax({
+                    url: '/profile/validate_fb/',
+                    data: {
+                        'user_id':{{ request.session.user_id }},
+                        'fb_id': $('#fb_id').val(),
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.is_taken) {
+                            $('#add_fb_result').append('<span class="label label-warning" id="warn_fb_id">' + data.error_message + '</span></br>');
+                        }
+                    }
+                });
+            })
+            // if clicking add new FB button on add new FB ID & KEY input modal
+            $('#submit_add_fb').click(function () {
+                $('.text-danger').remove();
+                var checking_fb_form = true;
+                if ($('#fb_id').val() == '') {
+                    $('#fb_id_form').append(warning_txt);
+                    checking_fb_form = false;
+                }
+                if ($('#fb_key').val() == '') {
+                    $('#fb_key_form').append(warning_txt);
+                    checking_fb_form = false;
+                }
+                if (checking_fb_form) {
+                    $('.label-warning').remove();
+                    $.ajax({
+                        url: '/profile/add_fb/',
+                        data: {
+                            'user_id':{{ request.session.user_id }},
+                            'fb_id': $('#fb_id').val(),
+                            'fb_key': $('#fb_key').val()
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data.is_added) {
+                                {#                            alert("Login successfully.");#}
+                                window.location.href = "/profile";
+                            }
+                            else {
+                                $('#add_fb_result').append('<span class="label label-warning" id="warn_fb_id">' + data.error_message + '</span></br>');
+                            }
+                        }
+                    });
+
+                }
+            })
+        {% endif %}
+        // warning text when elements of form are empty
+        var warning_txt = '<span class="text-danger"><p>This field is required.</p></span>';
+        var login_warning = '<span class="label label-warning"></span>';
+        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+
+        //if clicking basic paypal button
+        $('#pay_basic').click(function () {
+            alert('Basic payment')
+        })
+        //if clicking professional paypal button
+        $('#pay_pro').click(function () {
+            alert('Professional payment')
+        })
+        //if clicking premier paypal button
+        $('#pay_premier').click(function () {
+            alert('Premier payment')
+        })
+        // if clicking on Login button on nav bar
+        $('#login').click(function () {
+            $('.text-danger').remove();
+            $("#login_modal").modal('show');
+            $('#login_inputEmail').val('');
+            $('#login_inputPassword').val('');
+        })
+        // if clicking on Register button on nav bar
+        $('#register').click(function () {
+            $('.text-danger').remove();
+            $("#register_modal").modal('show');
+            $('#register_name').val('');
+            $('#register_email').val('');
+            $('#register_password').val('');
+            $('#register_confirm').val('');
+
+        })
+
+        // if hitting login button on Register modal
+        $('#register_login').click(function () {
+            $("#register_modal").modal('hide');
+            $("#login_modal").modal('show');
+            $('#login_inputEmail').val('');
+            $('#login_inputPassword').val('');
+            $('.text-danger').remove();
+        })
+        // if hitting resigter button on Login modal
+        $('#login_register').click(function () {
+            $("#login_modal").modal('hide');
+            $("#register_modal").modal('show');
+            $('#register_name').val('');
+            $('#register_email').val('');
+            $('#register_password').val('');
+            $('#register_confirm').val('');
+            $('.text-danger').remove();
+        })
+        // if hitting forget password button on Login modal
+        $('#forget_password').click(function () {
+            $("#login_modal").modal('hide');
+            $("#forget_modal").modal('show');
+            $('#forget_inputEmail').val('');
+            $('#forget').remove();
+            $('.text-danger').remove();
+        })
+        // if clicking confirm button on forget password modal form
+        $('#submit_forget').click(function () {
+            $('.text-danger').remove();
+            var checking_forget_form = true;
+            if ($('#forget_inputEmail').val() == '') {
+                $('#forget_email_form').append(warning_txt);
+                checking_forget_form = false;
+            }
+            if ($('#forget_inputEmail').val() != '' && !$('#forget_inputEmail').val().match(re)) {
+                $('#forget_email_form').append('<span class="text-danger"><p>Invalid email address</p></span>');
+                checking_forget_form = false;
+            }
+            if (checking_forget_form) {
+                $('#forget').remove();
+                $.ajax({
+                    url: '/ajax/forget_email/',
+                    data: {
+                        'email': $('#forget_inputEmail').val()
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        {#                        if (data.is_logged) {#}
+                        {#                            alert("Login successfully.");#}
+                        {#                            window.location.href = "/";#}
+                        {#                        }#}
+                        {#                        else {#}
+                        $('#forget_result').append('<span class="label label-warning" id="forget">' + data.message + '</span>');
+                        {#                        }#}
+                    }
+                });
+
+            }
+        })
+        // if clicking login button on login modal form
+        $('#submit_login').click(function () {
+            $('.text-danger').remove();
+            var checking_login_form = true;
+            if ($('#login_inputEmail').val() == '') {
+                $('#login_email').append(warning_txt);
+                checking_login_form = false;
+            }
+            if ($('#login_inputEmail').val() != '' && !$('#login_inputEmail').val().match(re)) {
+                $('#login_email').append('<span class="text-danger"><p>Invalid email address</p></span>');
+                checking_login_form = false;
+            }
+            if ($('#login_inputPassword').val() == '') {
+                $('#login_password').append(warning_txt);
+                checking_login_form = false;
+            }
+            if (checking_login_form) {
+                $('.label-warning').remove();
+                $.ajax({
+                    url: '/ajax/login/',
+                    data: {
+                        'email': $('#login_inputEmail').val(),
+                        'password': $('#login_inputPassword').val()
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.is_logged) {
+                            {#                            alert("Login successfully.");#}
+                            window.location.href = "/";
+                        }
+                        else {
+                            $('#login_result').append('<span class="label label-warning">' + data.error_message + '</span>');
+                        }
+                    }
+                });
+
+            }
+        })
+
+        $('#register_name').on('change', function () {
+            $('#warn_name').remove();
+            $.ajax({
+                url: '/ajax/validate_username/',
+                data: {
+                    'name': $('#register_name').val()
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.is_taken) {
+                        $('#resigter_result').append('<span class="label label-warning" id="warn_name">' + data.error_message + '</span></br>');
+                    }
+                }
+            });
+        })
+        $('#register_email').on('change', function () {
+            $('#warn_email').remove();
+            $.ajax({
+                url: '/ajax/validate_email/',
+                data: {
+                    'email': $('#register_email').val()
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.is_taken) {
+                        $('#resigter_result').append('<span class="label label-warning" id="warn_email">' + data.error_message + '</span></br>');
+                    }
+                }
+            });
+        })
+        // if clicking register button on register modal form
+        $('#submit_register').click(function () {
+            $('.text-danger').remove();
+            var checking_register_form = true;
+            if ($('#register_name').val() == '') {
+                $('#register_name_form').append(warning_txt);
+                checking_register_form = false;
+            }
+            if ($('#register_email').val() == '') {
+                $('#register_email_form').append(warning_txt);
+                checking_register_form = false;
+            }
+            if ($('#register_email').val() != '' && !$('#register_email').val().match(re)) {
+                $('#register_email_form').append('<span class="text-danger"><p>Invalid email address</p></span>');
+                checking_register_form = false;
+            }
+            if ($('#register_password').val() == '') {
+                $('#register_password_form').append(warning_txt);
+                checking_register_form = false;
+            }
+            if ($('#register_confirm').val() == '') {
+                $('#register_confirm_form').append(warning_txt);
+                checking_register_form = false;
+            }
+            if ($('#register_confirm').val() != '' && $('#register_confirm').val() != $('#register_password').val()) {
+                $('#register_confirm_form').append('<span class="text-danger"><p>Not matching password</p></span>');
+                checking_register_form = false;
+            }
+            if (checking_register_form) {
+                $.ajax({
+                    url: '/ajax/register/',
+                    data: {
+                        'name': $('#register_name').val(),
+                        'email': $('#register_email').val(),
+                        'password': $('#register_password').val(),
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.is_registered) {
+                            window.location.href = "/";
+                        }
+                    }
+                });
+
+            }
+        })
+    });
+</script>

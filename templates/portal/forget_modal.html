@@ -1,0 +1,37 @@
+{% load static %}
+
+<div class="modal fade" id="forget_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Forget password</h3>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+
+            </div>
+
+            <div class="modal-body">
+                <img id="profile-img" class="profile-img-card"
+                     src="{% static 'assets/images/login.png' %}"/>
+                <center id="forget_result">
+
+
+                </center>
+                <form class="form-signin" id="forget_form">
+                    <div class="form-group" id="forget_email_form">
+                        <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                        <input type="email" id="forget_inputEmail" class="form-control" placeholder="Email address"
+                               required autofocus>
+                    </div>
+
+                    <div class="row">
+                        <button class="btn btn-lg btn-primary btn-block btn-signin" type="button" id="submit_forget">
+                            Confirm
+                        </button>
+                    </div>
+                </form><!-- /form -->
+
+            </div>
+        </div>
+    </div>
+</div>

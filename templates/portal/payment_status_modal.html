@@ -1,0 +1,18 @@
+{% load static %}
+
+<div class="modal fade" id="payment_status_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Warning..</h3>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+
+            </div>
+
+            <div class="modal-body">
+                {{ payment_status.error_message }}
+            </div>
+        </div>
+    </div>
+</div>

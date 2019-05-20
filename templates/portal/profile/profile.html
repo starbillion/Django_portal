@@ -1,0 +1,79 @@
+{% extends 'layout/template.html' %}
+{% load static %}
+
+{% block content %}
+    <center>
+        <div class="container align-center">
+            <div class="row justify-content-md-center">
+                <div class="mbr-white col-md-10"
+                     style="margin-top: 100px; color: black; background-color: white; border-radius: 5px">
+                    <h2 class="mbr-section-title mbr-bold pb-3 mbr-fonts-style display-1" style="font-size: 2.25rem;">
+                        Profile page
+                    </h2>
+                    <div class="container" style="margin-top: 30px;">
+                        <div class="row">
+
+                            <div class="panel panel-info">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-3 col-lg-3 " align="center">
+                                            <img alt="User Pic"
+                                                 src="{% static 'assets/images/login.png' %}"
+                                                 class="profile-img-card">
+                                        </div>
+
+                                        <div class=" col-md-6 col-lg-6 ">
+                                            <table class="table table-user-information">
+                                                <tbody>
+                                                <tr>
+                                                    <td>Name:</td>
+                                                    <td>{{ user.name }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>E-mail:</td>
+                                                    <td>{{ user.email }}</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class=" col-md-3 col-lg-3">
+                                            <input class="btn btn-lg btn-primary btn-block btn-signin" id="add_fb"
+                                                   type="button" value="Add new FB ID & KEY account"/>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+
+                                                        <h2 style="font-size: 1.25rem;">
+                                                            FB ID Account & Key Account</br>
+                                                        </h2>
+                            <div class="col-sm-12">
+                                <table id="example" class="display table-bordered"
+                                       style="font-size: 15px;">
+                                    {% csrf_token %}
+
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 20%">FB ID</th>
+                                        <th style="width: 70%">FB KEY</th>
+                                        <th style="width: 10%">Action</th>
+
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </center>
+
+{% endblock %}

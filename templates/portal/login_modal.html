@@ -1,0 +1,64 @@
+{% load static %}
+
+<div class="modal fade" id="login_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Log in</h3>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+
+            </div>
+
+            <div class="modal-body">
+                {#                <div class="container">#}
+                {#                    <div class="card card-container">#}
+                <!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
+                <img id="profile-img" class="profile-img-card"
+                     src="{% static 'assets/images/login.png' %}"/>
+                {#                <p id="profile-name" class="profile-name-card"></p>#}
+                <center id="login_result">
+
+
+                </center>
+                <form class="form-signin" id="loging_form">
+                    <div class="form-group" id="login_email">
+                        <input type="email" id="login_inputEmail" class="form-control" placeholder="Email address"
+                               required autofocus>
+                    </div>
+                    <div class="form-group" id="login_password">
+                        <input type="password" id="login_inputPassword" class="form-control" placeholder="Password"
+                               required>
+                    </div>
+
+
+                    {#                    <div id="remember" class="checkbox">#}
+                    {#                        <label>#}
+                    {#                            <input type="checkbox" value="remember-me"> Remember me#}
+                    {#                        </label>#}
+                    {#                    </div>#}
+                    <div class="row">
+                        <button class="btn btn-lg btn-primary btn-block btn-signin" type="button" id="submit_login">Sign
+                            in
+                        </button>
+                    </div>
+                </form><!-- /form -->
+                <div class="row">
+                    <div class="col-sm-6">
+                        <a href="#" id="forget_password" class="forgot-password">
+                            Forgot the password?
+                        </a>
+                    </div>
+                    <div class="col-sm-6">
+                        <a href="#" id="login_register" class="forgot-password">
+                            Register
+                        </a>
+                    </div>
+                </div>
+
+                {#                    </div><!-- /card-container -->#}
+                {#                </div><!-- /container -->#}
+            </div>
+        </div>
+    </div>
+</div>

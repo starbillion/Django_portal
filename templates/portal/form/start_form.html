@@ -1,0 +1,265 @@
+{% extends 'layout/template.html' %}
+{% load static %}
+
+{% block content %}
+    <center>
+        <div class="container align-center">
+            <div class="row justify-content-md-center">
+                <div class="mbr-white col-md-10" style="margin-top: 100px">
+                    <h2 class="mbr-section-title mbr-bold pb-3 mbr-fonts-style display-1"
+                        style="font-size: 2.25rem;color: rgba(107,237,252,0.97)">
+                        Script Running Status</h2>
+                    <div class="row" style="color: white;border-radius: 5px;">
+                        {% if script %}
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    {#                                    <div class="col-sm-3" id="start_button"{% if task is False %} style="display: none;"{% endif %}>#}
+                                    {#                                        <button type="submit"#}
+                                    {#                                                class="btn btn-lg btn-primary btn-block btn-signin">#}
+                                    {#                                            Start#}
+                                    {#                                        </button>#}
+                                    {#                                    </div>#}
+                                    <div class="col-sm-3" id="stop_button">
+                                        <button type="submit"
+                                                class="btn btn-lg btn-warning btn-block btn-signin">
+                                            Stop
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                            <textarea class="form-control rounded-0" id="script_result" style="font-size: 12px;"
+                                      rows="20" readonly>
+                                {% if script.start is False %}
+                                    Stopped to run ..............
+                                {% endif %}
+                            </textarea>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-6">
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <label for="form1_fb_id">FB ID</label>
+
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    {{ fb_id }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <label for="exampleFormControlSelect2">FB KEY</label>
+
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    {{ fb_key }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    {% if script %}
+                                        {% if script.option == 1 %}
+                                            <div class="col-sm-4">
+                                                <div class="radio">
+                                                    <label><input type="radio" name="opt" value="1"
+                                                                  checked> Unit Exp (o)</label>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+
+                                        {% if script.option == 2 %}
+                                            <div class="col-sm-4">
+                                                <div class="radio">
+                                                    <label><input type="radio" name="opt" value="2"
+                                                                  checked> Rank Exp (o)</label>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                        {% if script.option == 3 %}
+                                            <div class="col-sm-4">
+                                                <div class="radio disabled">
+                                                    <label><input type="radio" name="opt" value="3"
+                                                                  checked> Both Unit & Rank Exp
+                                                        (o)</label>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                        {% if script.option != 1 and  script.option != 3 and script.option != 2 %}
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-sm-4">
+                                                            <label for="exampleFormControlSelect2">Amount of Times to
+                                                                Refill NRG with Lapis</label>
+
+                                                        </div>
+                                                        <div class="col-sm-8">
+                                                            {{ script.option }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <label for="form1_fb_id">Farm with NRG[x]</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    {% if script %}
+                                                        {{ comment }}
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                        {% else %}
+                            There is no task !
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </center>
+{% endblock %}
+
+{% block custom_js %}
+    {% if script %}
+        <script>
+            $(document).ready(function () {
+                var refresh;
+                var running_status = true;
+                {% if script.start is True %}
+                    start();
+                {% endif %}
+                function start() {
+                    var d = new Date();
+                    var year = d.getFullYear();
+                    var month = d.getMonth() + 1;
+                    var date = d.getDate();
+                    var time = d.getHours();
+                    var min = d.getMinutes()
+                    var sec = d.getSeconds()
+                    $('#script_result').append('\n.......... Running now (' + year + '-' + month + '-' + date + ' ' + time + ':' + min + ':' + sec + ')..........');
+                    $('#script_result').scrollTop($('#script_result')[0].scrollHeight - $('#script_result').height());
+                    if (running_status == true) {
+                        $.ajax({
+                            url: "/running_result_form1/",
+                            data: {
+                                'fb_id': '{{ fb_id }}',
+                                'fb_key': '{{ fb_key }}',
+                                'option': '{{ script.option }}',
+                                'level': '{{ script.level }}',
+                                'id': '{{ script.id }}'
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                if (data.no_task) {
+                                    $('#script_result').append('\n' + data.message + '');
+                                    if (running_status == true) {
+                                        start();
+                                    }
+                                }
+                                if (data.running == false) {
+                                    $('#script_result').append('\n' + data.message + '');
+                                        {#running_status == false#}
+                                    if (running_status == true) {
+                                        start();
+
+                                    }
+                                }
+                                if (data.running == true) {
+                                    $('#script_result').append('\n.......... Running now (' + year + '-' + month + '-' + date + ' ' + time + ':' + min + ':' + sec + ')..........');
+                                    {#sleep(5);#}
+                                    if (running_status == true) {
+                                        start();
+                                    }
+
+                                }
+                                if(typeof data.no_task === 'undefined' && typeof data.running === 'undefined') {
+                                    $('#script_result').append('\n.......... result (' + year + '-' + month + '-' + date + ' ' + time + ':' + min + ':' + sec + ')..........');
+
+                                    $.each(data['ACTIVE_PARTY'], function (i, obj) {
+                                        $('#script_result').append('\n' + obj.UnitName + '\n' + 'LEVEL: ' + obj.ULevel + '\n' + 'TRUST %: ' + obj.UTrust);
+                                        $('#script_result').append('\n------------------------------------');
+                                        $('#script_result').scrollTop($('#script_result')[0].scrollHeight - $('#script_result').height());
+                                    });
+                                    if (running_status == true) {
+                                        start();
+                                    }
+                                }
+
+                            },
+                            error: function (data) {
+                                $('#script_result').append('\nrunning error\n------------------------------------');
+                                $('#script_result').scrollTop($('#script_result')[0].scrollHeight - $('#script_result').height());
+                                if (running_status == true) {
+                                    start();
+                                }
+
+                            }
+                        });
+                    }
+
+                }
+
+                //$('#start_button').click(function () {
+                //running_status = true;
+                //start();
+                //$('#start_button').css('display', 'none');
+                //});
+                $('#stop_button').click(function () {
+                    running_status = false;
+                    {#$('#start_button').css('display', 'block');#}
+                    $.ajax({
+                        url: "/script_stop/",
+                        data: {
+                            'id': '{{ script.id }}',
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+
+                            if (data.stopped == true) {
+                                $('#script_result').append('\nrunning is stopped\n------------------------------------');
+                                $('#script_result').scrollTop($('#script_result')[0].scrollHeight - $('#script_result').height());
+                            }
+                        },
+                        /*
+                         error: function (data) {
+
+                         $('#script_result').scrollTop($('#script_result')[0].scrollHeight - $('#script_result').height());
+                         if (running_status == true) {
+                         start();
+                         }
+                         }
+                         */
+                    });
+                });
+            });
+        </script>
+    {% endif %}
+{% endblock %}

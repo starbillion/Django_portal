@@ -1,0 +1,35 @@
+{% load static %}
+
+<div class="modal fade" id="add_fb_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 150%;margin-left: -125px;">
+            <div class="modal-header">
+                <h3>Add new FB ID & KEY Account</h3>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <center id="add_fb_result">
+
+
+                </center>
+                <form class="form-signin" id="add_fb_form">
+                    <div class="form-group" id="fb_id_form">
+                        <input type="text" id="fb_id" class="form-control" placeholder="FB ID Account"
+                               required autofocus>
+                    </div>
+                    <div class="form-group" id="fb_key_form">
+                        <input type="text" id="fb_key" class="form-control" placeholder="FB KEY Account"
+                               required>
+                    </div>
+                    <div class="row">
+                        <button class="btn btn-lg btn-primary btn-block btn-signin" type="button" id="submit_add_fb">Add new</button>
+                    </div>
+                </form><!-- /form -->
+            </div>
+        </div>
+    </div>
+</div>

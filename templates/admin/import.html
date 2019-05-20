@@ -1,0 +1,18 @@
+{% extends "admin/change_list.html" %}
+{#{% load admin_static%}#}
+
+{% block object-tools-items %}
+    {{ block.super }}
+    <li>
+        {#    <a href="{% url 'admin:myurl' %}" class="btn btn-high btn-success">Import</a>#}
+        <a href="#" onclick="document.getElementById('fileInput').click();" class="btn btn-high btn-success">Mission Level Import</a>
+
+    </li>
+    <form class="form-inline" method="post" action="{% url 'import_farmlevel' %}" enctype="multipart/form-data"
+          style="display: none">
+        {% csrf_token %}
+        <input name="file" type="file" id="fileInput"
+               accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+               onchange="this.form.submit();">
+    </form>
+{% endblock %}
